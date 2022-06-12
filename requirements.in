@@ -1,0 +1,4 @@
+SQLAlchemy
+apscheduler
+mysqlclient
+python-dotenv
