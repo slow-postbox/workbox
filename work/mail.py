@@ -1,6 +1,7 @@
 from os import environ
 from time import sleep
 from datetime import datetime
+from logging import getLogger
 
 from dotenv import load_dotenv
 from sqlalchemy import and_
@@ -10,6 +11,8 @@ from sql.models import Mail
 from sql.models import User
 from sql.page import ITEM_PER_PAGE
 from mail import sendmail
+
+logger = getLogger()
 
 
 def get_page(session, model, filters, page: int) -> list:
@@ -62,8 +65,8 @@ def init(s):
                 # 메일은 전송되었음
                 mail.status = True
             except Exception as e:
-                print(f"FAIL TO SEND MAIL | mail_id={mail.id}")
-                print(e.__str__())
+                logger.critical(f"FAIL TO SEND MAIL | mail_id={mail.id}")
+                logger.critical(e.__str__())
 
             session.commit()
             sleep(3)

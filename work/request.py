@@ -1,6 +1,7 @@
 from time import sleep
 from datetime import datetime
 from datetime import timedelta
+from logging import getLogger
 
 from sqlalchemy import or_
 
@@ -10,10 +11,13 @@ from sql.models import PasswordReset
 from sql.page import get_max_page
 from sql.page import get_page
 
+logger = getLogger()
+
 
 def init(s):
     @s.scheduled_job('cron', hour="*/1")
     def remove_code():
+        logger.info("removing email verify request...")
         session = get_session()
         filters = or_(
             Code.used_date != None,
@@ -33,8 +37,11 @@ def init(s):
             session.commit()
             sleep(15)
 
+        logger.info("email verify request removed")
+
     @s.scheduled_job('cron', hour="*/1")
     def remove_password_reset():
+        logger.info("removing password reset request...")
         session = get_session()
         filters = or_(
             PasswordReset.used_date != None,
@@ -53,3 +60,5 @@ def init(s):
 
             session.commit()
             sleep(15)
+
+        logger.info("password reset request removed")
