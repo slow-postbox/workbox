@@ -268,3 +268,33 @@ class PasswordReset(Base):
 
     def __repr__(self):
         return f"<PasswordReset id={self.id} owner_id={self.owner_id} req_ip={self.req_ip!r}>"
+
+
+class UserLock(Base):
+    __tablename__ = "user_lock"
+
+    id = Column(
+        Integer,
+        unique=True,
+        primary_key=True,
+        nullable=False
+    )
+
+    owner_id = Column(
+        Integer,
+        ForeignKey("user.id")
+    )
+
+    creation_date = Column(
+        DateTime,
+        nullable=False,
+        default=func.now()
+    )
+
+    reason = Column(
+        Text,
+        nullable=False
+    )
+
+    def __repr__(self):
+        return f"<UserLock id={self.id} owner_id={self.owner_id}>"

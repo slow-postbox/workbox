@@ -6,7 +6,11 @@ from logging import getLogger
 
 from sql import get_session
 from sql.models import User
+from sql.models import LoginHistory
+from sql.models import PasswordReset
+from sql.models import Code
 from sql.models import Mail
+from sql.models import UserLock
 from sql.page import get_max_page
 from sql.page import get_page
 
@@ -28,10 +32,18 @@ def init(s):
         for page in range(1, max_page + 1):
             for user in get_page(session, User, filters, page):
                 if user.admin is False:
-                    mail_count = session.query(Mail).count()
-
-                    if mail_count == 0:
-                        session.query(Mail).filter_by(
+                    if session.query(UserLock).filter_by(
+                        owner_id=user.id
+                    ).count() == 0 and session.query(Mail).filter_by(
+                        owner_id=user.id
+                    ).count() == 0:
+                        session.query(LoginHistory).filter_by(
+                            owner_id=user.id
+                        ).delete()
+                        session.query(Code).filter_by(
+                            owner_id=user.id
+                        ).delete()
+                        session.query(PasswordReset).filter_by(
                             owner_id=user.id
                         ).delete()
 
