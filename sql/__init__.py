@@ -9,8 +9,8 @@ if 'SQLALCHEMY_DATABASE_URI' not in environ:
 
 engine = create_engine(
     url=environ['SQLALCHEMY_DATABASE_URI'],
-    pool_size=5,
-    max_overflow=3
+    pool_size=1,
+    max_overflow=5
 )
 session_factory = sessionmaker(bind=engine)
 
