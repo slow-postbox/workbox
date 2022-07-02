@@ -38,6 +38,7 @@ def init(s):
             sleep(15)
 
         logger.info("email verify request removed")
+        session.close()
 
     @s.scheduled_job('cron', hour="*/1")
     def remove_password_reset():
@@ -62,3 +63,4 @@ def init(s):
             sleep(15)
 
         logger.info("password reset request removed")
+        session.close()

@@ -32,3 +32,4 @@ def init(s):
             sleep(15)
 
         logger.info("login history removed")
+        session.close()

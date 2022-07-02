@@ -52,3 +52,5 @@ def init(s):
 
             session.commit()
             sleep(15)
+
+        session.close()

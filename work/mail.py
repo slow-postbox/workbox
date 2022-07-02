@@ -71,5 +71,7 @@ def init(s):
             session.commit()
             sleep(3)
 
+        session.close()
+
     # TODO: 삭제해야하는 메일 삭제 (전송했고, 읽었음)
 
